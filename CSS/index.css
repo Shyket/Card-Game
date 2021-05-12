@@ -1,0 +1,82 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.hide {
+  display: none;
+}
+
+.player {
+  width: 200px;
+  border: 1px solid black;
+  text-align: center;
+  height: 300px;
+  margin: 1em 0.5em;
+}
+
+.red {
+  color: red;
+}
+
+.card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0.5px solid black;
+  text-align: center;
+  width: 150px;
+  height: 200px;
+  margin: auto;
+  margin-top: 1em;
+  font-size: 2em;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 0.2em;
+  -webkit-box-shadow: 0.2em 0.2em 0.1em 0.05em black;
+          box-shadow: 0.2em 0.2em 0.1em 0.05em black;
+}
+
+.card p span {
+  font-size: 3.5em;
+}
+
+body {
+  margin-left: 1em;
+  height: 100vh;
+}
+
+body .input {
+  margin-top: 1em;
+}
+
+body .input p {
+  margin-bottom: 0.5em;
+}
+
+body .input input {
+  border-radius: 0.2em;
+  padding: 0.1em 0;
+}
+
+body .input button {
+  padding: 0.1em 0.8em;
+}
+
+body .game-area {
+  height: 100%;
+  margin: 3em 0.5em;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+/*# sourceMappingURL=index.css.map */

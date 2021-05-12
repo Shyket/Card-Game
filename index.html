@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/index.css"/>
+  </head>
+  <body>
+    <div class="indtruction">
+      <p>click to start the game</p>
+    </div>
+    <div class="input">
+      <p id="command">Select Number of players</p>
+      <input id="number-input" type="number" />
+      <button id="start-button">Start</button>
+      <button id="attack-button">Attack</button>
+    </div>
+    <div class="game-area"></div>
+  </body>
+  <script>
+    const startButton = document.getElementById("start-button");
+    const attackButton = document.getElementById("attack-button");
+
+    attackButton.classList.toggle("hide");
+
+    startButton.addEventListener("click", () => {
+      startButton.classList.toggle("hide");
+      attackButton.classList.toggle("hide");
+      startGame();
+    });
+
+    attackButton.addEventListener("click", () => {
+      let numOfAttack = document.getElementById("number-input").value;
+      for (i = 0; i < numOfAttack; i++) {
+        attack(document.querySelectorAll(".player"));
+        showCards(document.querySelectorAll(".player"));
+      }
+    });
+
+    function attack(players) {
+      console.log(players);
+      let revealedCards = [];
+      let winner = {
+        cardValue: -1,
+        position: null,
+      };
+      players.forEach((player) => {
+        if (player.gameState.revealedCard != null) {
+          revealedCards.push(player.gameState.revealedCard);
+          if (winner.cardValue < player.gameState.revealedCard.value) {
+            winner.cardValue = player.gameState.revealedCard.value;
+            winner.position = player.gameState.position;
+          }
+          player.gameState.revealedCard = null;
+        }
+      });
+      let winnerCards = revealedCards.filter((card, index, arr) => {
+        return card.value != winner.cardValue;
+      });
+      winnerCards.forEach((card) => {
+        players[winner.position].gameState.currentCards.push(card);
+      });
+      console.log(winner.position);
+    }
+
+    const createDeck = () => {
+      const deck = [];
+      const suits = ["hearts", "diamond", "clubs", "spades"];
+      const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "K", "Q", "A"];
+
+      for (i = 0; i < suits.length; i++) {
+        for (j = 0; j < ranks.length; j++) {
+          let card = {
+            rank: ranks[j],
+            suit: suits[i],
+            value: i + j + 1,
+          };
+          deck.push(card);
+        }
+      }
+
+      return deck;
+    };
+
+    const createPlayer = (numOfPlayer) => {
+      let playerList = [];
+      const gameArea = document.querySelector(".game-area");
+      for (i = 0; i < numOfPlayer; i++) {
+        let player = document.createElement("div");
+        player.classList.add("player");
+        player.gameState = {
+          position: i,
+          currentCards: [],
+          revealedCard: {},
+        };
+        player.setAttribute("id", "player" + (i + 1));
+        let playerName = document.createElement("div");
+        playerName.textContent = "Player " + (i + 1);
+        let cards = document.createElement("div");
+        cards.innerHTML = "Cards";
+        player.appendChild(playerName);
+        player.appendChild(cards);
+        gameArea.appendChild(player);
+        playerList.push(player);
+      }
+
+      return playerList;
+    };
+
+    const distributeCards = (players, deck) => {
+      let playerCounter = 0;
+      let numOfCards = deck.length;
+      for (i = 0; i < numOfCards; i++) {
+        let rand = Math.floor(Math.random() * deck.length);
+        let card = deck.splice(rand, 1)[0];
+        players[playerCounter].gameState.currentCards.push(card);
+        playerCounter++;
+        if (playerCounter >= players.length) {
+          playerCounter = 0;
+        }
+      }
+    };
+
+    const showCards = (players) => {
+      for (i = 0; i < players.length; i++) {
+        let card = players[i].gameState.currentCards.shift();
+        if (card !== undefined) {
+          players[i].gameState.revealedCard = card;
+          players[i].childNodes[1].innerHTML =
+            "<p>" + card.rank + "<br><span>&" + card.suit + ";</span></P>";
+          players[i].childNodes[1].classList.add("card");
+          if (card.suit === "diamond" || card.suit === "hearts") {
+            players[i].childNodes[1].classList.add("red");
+          } else {
+            players[i].childNodes[1].classList.remove("red");
+          }
+        } else {
+          players[i].childNodes[1].innerHTML = "<p>" + "player lost" + "</P>";
+          players[i].childNodes[1].classList.remove("card");
+          players[i].childNodes[1].classList.remove("red");
+          players[i].gameState.revealedCard = null;
+        }
+      }
+    };
+
+    const startGame = () => {
+      var numOfPlayers = document.getElementById("number-input").value;
+      document.getElementById("number-input").value = 1;
+      document.getElementById("command").innerHTML = "Select number of attack";
+      var deck = createDeck();
+      var players = createPlayer(numOfPlayers);
+      distributeCards(players, deck);
+      showCards(players);
+    };
+  </script>
+</html>
