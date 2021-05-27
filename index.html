@@ -125,22 +125,23 @@
 
     const showCards = (players) => {
       for (i = 0; i < players.length; i++) {
-        let card = players[i].gameState.currentCards.shift();
+        let currentPlayer = players[i];
+        let card = currentPlayer.gameState.currentCards.shift();
         if (card !== undefined) {
-          players[i].gameState.revealedCard = card;
-          players[i].childNodes[1].innerHTML =
+          currentPlayer.gameState.revealedCard = card;
+          currentPlayer.childNodes[1].innerHTML =
             "<p>" + card.rank + "<br><span>&" + card.suit + ";</span></P>";
-          players[i].childNodes[1].classList.add("card");
+          currentPlayer.childNodes[1].classList.add("card");
           if (card.suit === "diamond" || card.suit === "hearts") {
-            players[i].childNodes[1].classList.add("red");
+            currentPlayer.childNodes[1].classList.add("red");
           } else {
-            players[i].childNodes[1].classList.remove("red");
+            currentPlayer.childNodes[1].classList.remove("red");
           }
         } else {
-          players[i].childNodes[1].innerHTML = "<p>" + "player lost" + "</P>";
-          players[i].childNodes[1].classList.remove("card");
-          players[i].childNodes[1].classList.remove("red");
-          players[i].gameState.revealedCard = null;
+          currentPlayer.childNodes[1].innerHTML = "<p>" + "player lost" + "</P>";
+          currentPlayer.childNodes[1].classList.remove("card");
+          currentPlayer.childNodes[1].classList.remove("red");
+          currentPlayer.gameState.revealedCard = null;
         }
       }
     };
