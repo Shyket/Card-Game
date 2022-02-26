@@ -1,2 +1,2 @@
 # Card-Game
- A simpke card game built with javascript
+ A simple card game built with javascript
